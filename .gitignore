@@ -1,0 +1,10 @@
+.gradle/
+.local-gradle/
+**/build/
+local.properties
+*.jks
+*.keystore
+.signing/
+captures/
+.DS_Store
+dist/
