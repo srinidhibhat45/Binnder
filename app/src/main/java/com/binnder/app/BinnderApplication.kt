@@ -14,9 +14,10 @@ class BinnderApplication : Application() {
         val work = WorkManager.getInstance(this)
         work.enqueueUniquePeriodicWork("trash-cleanup", ExistingPeriodicWorkPolicy.KEEP,
             PeriodicWorkRequestBuilder<CleanupWorker>(1,TimeUnit.HOURS).build())
-        work.enqueueUniquePeriodicWork("github-updates", ExistingPeriodicWorkPolicy.UPDATE,
+        if(BuildConfig.SELF_UPDATE) work.enqueueUniquePeriodicWork("github-updates", ExistingPeriodicWorkPolicy.UPDATE,
             PeriodicWorkRequestBuilder<UpdateWorker>(15,TimeUnit.MINUTES)
                 .setConstraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()).build())
+        else work.cancelUniqueWork("github-updates")
     }
 }
 

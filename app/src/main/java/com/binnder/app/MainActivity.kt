@@ -432,6 +432,7 @@ fun kindIcon(kind: FileKind): ImageVector = when(kind) {
         Text("Storage",style=MaterialTheme.typography.titleLarge)
         Text("${formatSize(state.freed)} permanently deleted by Binnder",style=MaterialTheme.typography.bodyLarge)
         Text("Moving a file to the bin does not free space. Files are kept on their original storage volume.",style=MaterialTheme.typography.bodyMedium,color=MaterialTheme.colorScheme.onSurfaceVariant)
+        if(BuildConfig.SELF_UPDATE) {
         HorizontalDivider(Modifier.padding(vertical=8.dp))
         Text("GitHub updates",style=MaterialTheme.typography.titleLarge)
         Text("Use a public repository with Binnder’s signed release workflow. Automatic checks download verified updates; Android asks you to approve installation.",style=MaterialTheme.typography.bodyMedium)
@@ -451,6 +452,7 @@ fun kindIcon(kind: FileKind): ImageVector = when(kind) {
                     else { pendingInstall=update;installPermission.launch(Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,Uri.parse("package:${context.packageName}"))) }
                 }.onFailure { vm.message(it.message ?: "Could not open the Android installer.") }
             }) { Text("Install ${update.version}") }
+        }
         }
         HorizontalDivider(Modifier.padding(vertical=8.dp))
         Text("Swipe guide",style=MaterialTheme.typography.titleLarge)

@@ -40,11 +40,11 @@ jobs:
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
         run: |
           chmod +x gradlew
-          ./gradlew testDebugUnitTest lintRelease assembleRelease
+          ./gradlew testGithubDebugUnitTest lintGithubRelease assembleGithubRelease
       - name: Prepare update manifest
         run: |
           mkdir -p dist
-          cp app/build/outputs/apk/release/app-release.apk dist/binnder.apk
+          cp app/build/outputs/apk/github/release/app-github-release.apk dist/binnder.apk
           python3 - <<'PY'
           import hashlib,json,os,pathlib
           p=pathlib.Path('dist/binnder.apk')

@@ -18,8 +18,8 @@ jobs:
           packages: 'platform-tools platforms;android-36 build-tools;36.0.0'
       - uses: gradle/actions/setup-gradle@v4
       - run: chmod +x gradlew
-      - run: ./gradlew testDebugUnitTest lintDebug assembleDebug
+      - run: ./gradlew testGithubDebugUnitTest lintGithubDebug lintPlayRelease assembleGithubDebug assemblePlayDebug
       - uses: actions/upload-artifact@v4
         with:
           name: binnder-debug
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: app/build/outputs/apk/github/debug/app-github-debug.apk

@@ -17,6 +17,19 @@ android {
         versionName = System.getenv("VERSION_NAME") ?: "0.1.2"
         buildConfigField("String", "UPDATE_REPOSITORY", "\"$updateRepository\"")
     }
+    flavorDimensions += "store"
+    productFlavors {
+        // Sideloaded APKs published to GitHub Releases, with the built-in OTA updater.
+        create("github") {
+            dimension = "store"
+            buildConfigField("boolean", "SELF_UPDATE", "true")
+        }
+        // Google Play build: Play delivers updates, so the self-updater and its permissions are removed.
+        create("play") {
+            dimension = "store"
+            buildConfigField("boolean", "SELF_UPDATE", "false")
+        }
+    }
     signingConfigs {
         create("release") {
             val keyPath = System.getenv("SIGNING_KEYSTORE")

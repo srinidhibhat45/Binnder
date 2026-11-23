@@ -56,7 +56,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 }
             } finally { resuming=false }
         }
-        if(updates.automatic && ReviewPolicy.validRepository(updates.repository)) startUpdateCheck(force=false,silent=true)
+        if(BuildConfig.SELF_UPDATE && updates.automatic && ReviewPolicy.validRepository(updates.repository)) startUpdateCheck(force=false,silent=true)
     }
     fun scan() {
         if(state.value.scanning) return
@@ -105,7 +105,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
     fun checkUpdates() = startUpdateCheck(force=true,silent=false)
     private fun startUpdateCheck(force:Boolean,silent:Boolean) {
-        if(state.value.checkingUpdate) return
+        if(!BuildConfig.SELF_UPDATE || state.value.checkingUpdate) return
         mutable.update { it.copy(checkingUpdate=true) }
         viewModelScope.launch {
             runCatching { updates.check(force=force) }.onFailure { if(!silent) message(it.message ?: "Could not check for updates.") }
