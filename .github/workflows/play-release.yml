@@ -1,5 +1,7 @@
 name: Build Google Play bundle
 on:
+  push:
+    tags: ['play-v*']
   workflow_dispatch:
     inputs:
       version_name:
@@ -29,7 +31,9 @@ jobs:
           printf '%s' "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/binnder.jks"
           # Play version codes must strictly increase for every upload.
           echo "VERSION_CODE=$((GITHUB_RUN_NUMBER + 100))" >> "$GITHUB_ENV"
-          echo "VERSION_NAME=${{ inputs.version_name }}" >> "$GITHUB_ENV"
+          NAME="${{ inputs.version_name }}"
+          [ -n "$NAME" ] || NAME="${GITHUB_REF_NAME#play-v}"
+          echo "VERSION_NAME=$NAME" >> "$GITHUB_ENV"
       - name: Test and build signed Play bundle
         env:
           SIGNING_KEYSTORE: ${{ runner.temp }}/binnder.jks

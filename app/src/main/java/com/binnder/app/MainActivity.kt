@@ -418,6 +418,8 @@ fun kindIcon(kind: FileKind): ImageVector = when(kind) {
     }
 }
 
+private const val PRIVACY_POLICY_URL = "https://github.com/srinidhibhat45/Binnder/blob/main/docs/PRIVACY.md"
+
 @Composable private fun SettingsScreen(state:AppState,vm:MainViewModel) {
     val context=LocalContext.current
     var repo by rememberSaveable { mutableStateOf(vm.updates.repository) }
@@ -459,5 +461,9 @@ fun kindIcon(kind: FileKind): ImageVector = when(kind) {
         GestureGuide()
         Text("All deletions wait five seconds. If you leave the app, pending actions still finish when Android schedules them. Uninstalling Binnder removes its bin index; restore binned files first. Files in .Binnder-trash remain on shared storage if the app is uninstalled.",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
         Text("Binnder ${BuildConfig.VERSION_NAME} · Android 11+\nNo accounts. No analytics. No file uploads.",style=MaterialTheme.typography.bodySmall,color=MaterialTheme.colorScheme.onSurfaceVariant)
+        TextButton(onClick={
+            runCatching { context.startActivity(Intent(Intent.ACTION_VIEW,Uri.parse(PRIVACY_POLICY_URL))) }
+                .onFailure { vm.message("No browser available. Privacy policy: $PRIVACY_POLICY_URL") }
+        }) { Text("Privacy policy") }
     }
 }
